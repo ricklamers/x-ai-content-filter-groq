@@ -5,7 +5,14 @@ const topicsConfig = [
 ];
 
 // Function to check for new posts on the page
-function checkForNewPosts() {
+async function checkForNewPosts() {
+    // Early check for API key
+    const apiKey = await getGroqApiKey();
+    if (!apiKey) {
+        console.error("No API key provided. Aborting analysis.");
+        return;
+    }
+
     const posts = document.querySelectorAll('[data-testid="cellInnerDiv"]');
 
     posts.forEach(async post => {
@@ -22,7 +29,7 @@ function checkForNewPosts() {
         if (postId) {
             let analysis = await getCachedAnalysis(postId);
             if (!analysis) {
-                analysis = await analyzeTweet(postText);
+                analysis = await analyzeTweet(postText, apiKey);
                 await cacheAnalysis(postId, analysis);
             }
             applyPostVisibility(postId, analysis);
@@ -113,8 +120,7 @@ window.resetCache = resetCache;
 console.log('To reset the cache, run resetCache() in the console.');
 
 // Function to analyze a tweet using the Groq API
-async function analyzeTweet(tweetText) {
-    let apiKey = await getGroqApiKey();
+async function analyzeTweet(tweetText, apiKey) {
     let retries = 0;
     const maxRetries = 3;
     const messages = [
@@ -177,9 +183,13 @@ async function getGroqApiKey() {
                 resolve(result.GROQ_API_KEY);
             } else {
                 const apiKey = prompt("Please enter your Groq API key:");
-                chrome.storage.local.set({ GROQ_API_KEY: apiKey }, () => {
-                    resolve(apiKey);
-                });
+                if (apiKey) {
+                    chrome.storage.local.set({ GROQ_API_KEY: apiKey }, () => {
+                        resolve(apiKey);
+                    });
+                } else {
+                    resolve(null);
+                }
             }
         });
     });
