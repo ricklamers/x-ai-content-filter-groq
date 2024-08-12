@@ -33,3 +33,15 @@ const topicsConfig = [
 - `manifest.json`: Extension manifest file.
 - `content.js`: Main script for analyzing and filtering posts.
 
+## Mobile
+
+Use the x-ai-filter-userscript.js file to run the extension on mobile.
+
+See the iOS Userscripts repo for more information:
+https://github.com/quoid/userscripts
+
+The latest version of the userscript is available at:
+https://omba.nl/files/x-ai-filter/x-ai-filter-userscript.js
+
+(And in this repo, but the above supports userscripts' update mechanism.)
+
