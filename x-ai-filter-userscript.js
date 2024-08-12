@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         X Content Filter
-// @version      1.16
+// @version      1.17
 // @updateURL    https://omba.nl/files/x-ai-filter/x-ai-filter-userscript.js
 // @downloadURL  https://omba.nl/files/x-ai-filter/x-ai-filter-userscript.js
 // @description  Analyzes and filters content on X.com based on configured topics
@@ -102,7 +102,8 @@
                     postElement.style.display = 'none';
                     const tweetUrl = `https://x.com/user/status/${postId}`;
                     const tweetText = postElement.querySelector('[data-testid="tweetText"]')?.innerText.trim() || 'Text not found';
-                    const message = `Post ${postId} hidden: ${tweetUrl}\n${tweetText}`;
+                    const scores = topicsConfig.map(topic => `${topic.topic}: ${analysis[topic.topic].toFixed(2)}`).join(', ');
+                    const message = `Post ${postId} hidden: ${tweetUrl}\n${tweetText}\nScores: ${scores}`;
                     updateOverlay(message);
                 }
             }
