@@ -35,7 +35,7 @@ const topicsConfig = [
 
 ## Mobile
 
-Use the x-ai-filter-userscript.js file to run the extension on mobile.
+Use the [x-ai-filter-userscript.js](x-ai-filter-userscript.js) file to run the extension on mobile.
 
 See the iOS Userscripts repo for more information:
 https://github.com/quoid/userscripts
